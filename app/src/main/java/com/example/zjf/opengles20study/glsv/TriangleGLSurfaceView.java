@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.util.AttributeSet;
 
 import com.example.zjf.opengles20study.base.BaseGLSurfaceView;
+import com.example.zjf.opengles20study.shape.triangle.CameraTriangle;
 import com.example.zjf.opengles20study.shape.triangle.Triangle;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -20,14 +21,17 @@ public class TriangleGLSurfaceView extends BaseGLSurfaceView {
 
     public TriangleGLSurfaceView(Context context) {
         super(context);
-        setRenderer(new TriangleRenderer()); // 绘制三角形
+        //setRenderer(new TriangleRenderer()); // 绘制普通三角形
+        setRenderer(new CameraTriangleRenderer());//绘制摄像机下的的三角形
     }
 
     public TriangleGLSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setRenderer(new TriangleRenderer()); // 绘制三角形
+        //setRenderer(new TriangleRenderer()); // 绘制普通三角形
+        setRenderer(new CameraTriangleRenderer());//绘制摄像机下的的三角形
     }
 
+    //普通三角形Triangle.java
     class TriangleRenderer implements Renderer{
         private Triangle triangle;
 
@@ -39,6 +43,25 @@ public class TriangleGLSurfaceView extends BaseGLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             GLES20.glViewport(0, 0, width, height);
+        }
+
+        @Override
+        public void onDrawFrame(GL10 gl) {
+            triangle.draw();
+        }
+    }
+
+    //摄像机下的的三角形CameraTriangle.java
+    class CameraTriangleRenderer implements Renderer{
+        CameraTriangle triangle;
+        @Override
+        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            triangle = new CameraTriangle();
+        }
+
+        @Override
+        public void onSurfaceChanged(GL10 gl, int width, int height) {
+            triangle.onSurfaceChanged(width, height);
         }
 
         @Override
