@@ -49,7 +49,7 @@ public class Triangle extends BaseGLSL{
 
     public Triangle() {
         GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f); // 申请底色空间
-
+        //为存放形状的坐标，初始化顶点字节缓冲
         ByteBuffer bb = ByteBuffer.allocateDirect(Triangle.triangleCoords.length * 4);
         bb.order(ByteOrder.nativeOrder());
 
